@@ -189,3 +189,7 @@ ModelManifest.xml
 src/packages/
 src/.vs/
 src/Seaside.vs/
+
+# Terraform
+*terraform.tfstate*
+*.terraform
