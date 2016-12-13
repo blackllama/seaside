@@ -34,6 +34,62 @@ variable "aws-az-mapping" {
     }
 }
 
+// RDS
+
+variable "aws-rds-db-name" {
+    type        = "string"
+    description = "The name of the database to install."
+    default     = "mydb"
+}
+
+variable "aws-rds-db-password" {
+    type        = "string"
+    description = "The password for the database."
+    default     = "mydbpass"
+}
+
+variable "aws-rds-db-username" {
+    type        = "string"
+    description = "The username for the database."
+    default     = "mydbuser"
+}
+
+variable "aws-rds-engine" {
+    type        = "string"
+    description = "The AWS RDS engine to use: aurora mysql oracle pgsql sqlserver"
+    default     = "postgres"
+}
+
+variable "aws-rds-engine-version" {
+    type        = "string"
+    description = "The engine version to use."
+    default     = "9.6"
+}
+
+variable "aws-rds-instance-class" {
+    type        = "string"
+    description = "The RDS image to use with the RDS instance."
+    default     = "db.t2.micro"
+}
+
+variable "aws-rds-sg-ids" {
+    type        = "list"
+    description = "List of security groups to associate with the AWS RDS instance."
+    default     = []
+}
+
+variable "aws-rds-storage-size" {
+    type        = "string"
+    description = "The storage size of an RDS instance."
+    default     = "10"
+}
+
+variable "aws-rds-storage-type" {
+    type        = "string"
+    description = "The storage type of an RDS instance."
+    default     = "gp2"
+}
+
 //
 // Infrastructure
 //
@@ -44,6 +100,7 @@ provider "aws" {
 }
 
 module "vpc-stack" {
+    source               = "./vpc-stack"
     aws-acl-tag-name     = "${var.name}-${var.environment}-acl"
     aws-az-mapping       = "${var.aws-az-mapping}"
     aws-igw-tag-name     = "${var.name}-${var.environment}-igw"
@@ -52,5 +109,27 @@ module "vpc-stack" {
     aws-vpc-tag-name     = "${var.name}-${var.environment}-vpc"
     environment          = "${var.environment}"
     name                 = "${var.name}"
-    source               = "./vpc-stack"
+}
+
+module "security-groups" {
+    source = "./security-groups"
+    name = "${var.name}"
+    environment = "${var.environment}"
+    aws-vpc-id = "${module.vpc-stack.aws-vpc-id}"
+}
+
+module "rds-instance" {
+    source                 = "./rds-instance"
+    aws-rds-storage-size   = "${var.aws-rds-storage-size}"
+    aws-rds-engine         = "${var.aws-rds-engine}"
+    aws-rds-engine-version = "${var.aws-rds-engine-version}"
+    aws-rds-instance-name  = "${var.name}-${var.environment}-rds"
+    aws-rds-instance-class = "${var.aws-rds-instance-class}"
+    aws-rds-storage-type   = "${var.aws-rds-storage-type}"
+    aws-rds-db-name        = "${var.aws-rds-db-name}"
+    aws-rds-db-password    = "${var.aws-rds-db-password}"
+    aws-rds-db-username    = "${var.aws-rds-db-username}"
+    aws-rds-sg-ids         = ["${module.security-groups.elb-security-group-id}"]
+    aws-rds-vpc-id         = "${module.vpc-stack.aws-vpc-id}"
+    aws-rds-subnets        = ["${module.vpc-stack.aws-subnets}"]
 }
