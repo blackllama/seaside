@@ -1,6 +1,6 @@
 # Seaside
 
-## Tools
+## Tools Setup
 
 Install aws by downloading from here: https://aws.amazon.com/cli/
 
@@ -16,22 +16,22 @@ Add the terraform executable into your PATH environment variable.
 
 Rename `terraform` to `tf` to save typing.
 
-## Setup
+## AWS Infrastructure Setup
 
-`cd infra/terraform`
+`$ cd infra/terraform`
 
 Validate the terraform template:
 
-`$ terraform validate`
+`$ tf validate`
 
 Plan the terraform template:
 
-`$ terraform plan`
+`$ tf plan`
 
 Apply the terraform template:
 
-`$ terraform apply`
+`$ tf apply`
 
 Destroy the terraform template:
 
-`$ terraform destroy`
+`$ tf destroy`
