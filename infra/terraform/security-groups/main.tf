@@ -14,21 +14,14 @@ variable "aws-vpc-id" {
     description = "The AWS VPC ID."
 }
 
-resource "aws_security_group" "elb-security-group" {
-  name        = "${var.name}-${var.environment}-external-elb"
+resource "aws_security_group" "web-sg" {
+  name        = "${var.name}-${var.environment}-web-sg"
   description = "Allows external ELB traffic"
   vpc_id      = "${var.aws-vpc-id}"
 
   ingress {
     from_port   = 80
     to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -45,16 +38,48 @@ resource "aws_security_group" "elb-security-group" {
   }
 
   tags {
-    Name        = "${var.name}-${var.environment}-external-elb"
+    Name        = "${var.name}-${var.environment}-web-sg"
     Environment = "${var.environment}"
   }
 }
 
+resource "aws_security_group" "bastion-sg" {
+  name        = "${var.name}-${var.environment}-bastion-sg"
+  description = "Allows external ELB traffic"
+  vpc_id      = "${var.aws-vpc-id}"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags {
+    Name        = "${var.name}-${var.environment}-bastion-sg"
+    Environment = "${var.environment}"
+  }
+}
 
 //
 // Outputs
 //
 
-output "elb-security-group-id" {
-  value = "${aws_security_group.elb-security-group.id}"
+output "web-sg-id" {
+  value = "${aws_security_group.web-sg.id}"
+}
+
+output "bastion-sg-id" {
+  value = "${aws_security_group.bastion-sg.id}"
 }

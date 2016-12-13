@@ -118,6 +118,17 @@ module "security-groups" {
     aws-vpc-id = "${module.vpc-stack.aws-vpc-id}"
 }
 
+resource "aws_subnet" "rds-subnet" {
+    count             = "${length(split(",", lookup(var.aws-az-mapping, var.aws-region-id)))}"
+    availability_zone = "${var.aws-region-id}${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
+    cidr_block        = "10.0.1${count.index}.0/24"
+    vpc_id            = "${module.vpc-stack.aws-vpc-id}"
+    tags {
+        Name  = "${var.name}-${var.environment}-rds-subnet"
+        Owner = "terraform-${var.name}-${var.environment}-${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
+    }
+}
+
 module "rds-instance" {
     source                 = "./rds-instance"
     aws-rds-storage-size   = "${var.aws-rds-storage-size}"
@@ -129,7 +140,7 @@ module "rds-instance" {
     aws-rds-db-name        = "${var.aws-rds-db-name}"
     aws-rds-db-password    = "${var.aws-rds-db-password}"
     aws-rds-db-username    = "${var.aws-rds-db-username}"
-    aws-rds-sg-ids         = ["${module.security-groups.elb-security-group-id}"]
+    aws-rds-sg-ids         = ["${module.security-groups.web-sg-id}", "${module.security-groups.bastion-sg-id}"]
     aws-rds-vpc-id         = "${module.vpc-stack.aws-vpc-id}"
-    aws-rds-subnets        = ["${module.vpc-stack.aws-subnets}"]
+    aws-rds-subnets        = ["${aws_subnet.rds-subnet.*.id}"]
 }
