@@ -16,7 +16,7 @@ variable "aws-vpc-id" {
 
 resource "aws_security_group" "web-sg" {
   name        = "${var.name}-${var.environment}-web-sg"
-  description = "Allows external ELB traffic"
+  description = "Allows http traffic"
   vpc_id      = "${var.aws-vpc-id}"
 
   ingress {
@@ -45,13 +45,13 @@ resource "aws_security_group" "web-sg" {
 
 resource "aws_security_group" "bastion-sg" {
   name        = "${var.name}-${var.environment}-bastion-sg"
-  description = "Allows external ELB traffic"
+  description = "Allows ssh traffic"
   vpc_id      = "${var.aws-vpc-id}"
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "ssh"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
