@@ -80,7 +80,6 @@ variable "aws-rds-vpc-id" {
 
 resource "aws_security_group" "rds-sg" {
     name        = "${var.aws-rds-instance-name}-sg"
-    description = "Allows external ELB traffic"
     vpc_id      = "${var.aws-rds-vpc-id}"
 
     ingress {
@@ -88,13 +87,6 @@ resource "aws_security_group" "rds-sg" {
         to_port         = 5432
         protocol        = "tcp"
         security_groups = ["${var.aws-rds-sg-ids}"]
-    }
-
-    ingress {
-        from_port   = 22
-        to_port     = 22
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
     }
 
     egress {
