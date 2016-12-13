@@ -6,12 +6,15 @@ Install aws by downloading from here: https://aws.amazon.com/cli/
 
 Create a user in AWS IAM called `seaside-infra` which has temporary administrator access so that we can setup our infrastructure. 
 
-Configure aws cli: `aws configure --profile seaside-infra`.
+Configure aws cli: 
+
+`$ aws configure --profile seaside-infra`
 
 Install terraform by downloading from here: https://www.terraform.io/downloads.html
 
-Add terraform executable into your PATH environment variable. I rename `terraform.exe` to `tf.exe` to save typing.
+Add the terraform executable into your PATH environment variable. 
 
+Rename `terraform` to `tf` to save typing.
 
 ## Setup
 
