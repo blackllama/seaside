@@ -1,0 +1,30 @@
+version: 0.0
+os: linux
+files:
+  - source: seasideweb
+    destination: /var/seasideweb
+  - source: etc/nginx/sites-available
+    destination: /etc/nginx/sites-available
+  - source: etc/supervisor/conf.d
+    destination: /etc/supervisor/conf.d
+hooks:  
+  ApplicationStop:
+    - location: scripts/deregister_from_elb.sh
+      timeout: 120
+    - location: scripts/stop_server.sh
+      timeout: 120
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      timeout: 120
+      runas: root
+    - location: scripts/register_with_elb.sh
+      timeout: 120
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 300
+      runas: root
+  ValidateService:
+    - location: scripts/validate_service.sh
+      timeout: 120
+      runas: root

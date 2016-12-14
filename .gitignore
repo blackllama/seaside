@@ -58,6 +58,7 @@ dlldata.c
 *.scc
 *.ppk
 *.pem
+*.zip
 
 # Chutzpah Test files
 _Chutzpah*
@@ -191,6 +192,8 @@ ModelManifest.xml
 src/packages/
 src/.vs/
 src/Seaside.vs/
+
+infra/deploy/web/
 
 # Terraform
 *terraform.tfstate*
