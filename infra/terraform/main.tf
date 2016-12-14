@@ -125,7 +125,7 @@ module "security-groups" {
 }
 
 //
-// RDS Instance
+// RDS
 //
 
 # resource "aws_subnet" "rds-subnet" {
@@ -156,7 +156,7 @@ module "security-groups" {
 # }
 
 //
-// Bastion EC2 instance
+// Bastion
 //
 
 module "bastion" {
