@@ -118,6 +118,7 @@ module "security-groups" {
     aws-vpc-id                      = "${module.vpc-stack.aws-vpc-id}"
 }
 
+/*
 module "rds-instance" {
     source                          = "./rds-instance"
     aws-rds-storage-size            = "${var.aws-rds-storage-size}"
@@ -142,6 +143,7 @@ module "bastion" {
     environment                     = "${var.environment}"
     name                            = "${var.name}"
 }
+*/
 
 module "iam" {
     source                          = "./iam"
@@ -159,9 +161,12 @@ module "codedeploy" {
 }
 
 module "web" {
-    source                          = "./web"
-    name                            = "${var.name}"
-    environment                     = "${var.environment}"
-    aws-web-subnet-ids              = ["${module.vpc-stack.web-subnets}"]
-    aws-web-security-group-ids      = ["${module.security-groups.web-security-group-id}"]
+    source                              = "./web"
+    name                                = "${var.name}"
+    environment                         = "${var.environment}"
+    aws-region-id                       = "${var.aws-region-id}"
+    aws-ec2-keypair-name                = "${var.aws-ec2-keypair-name}"
+    aws-codedeploy-instance-profile-arn = "${module.iam.aws-codedeploy-instance-profile-arn}"
+    aws-web-subnet-ids                  = ["${module.vpc-stack.web-subnets}"]
+    aws-web-security-group-ids          = ["${module.security-groups.web-security-group-id}"]
 }
