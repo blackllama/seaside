@@ -104,14 +104,14 @@ resource "aws_iam_instance_profile" "codedeploy-instance-profile" {
 // Outputs
 //
 
-output "codedeploy-service-role-arn" {
+output "aws-codedeploy-service-role-arn" {
   value = "${aws_iam_role.codedeploy-service-role.arn}"
 }
 
-output "codedeploy-instance-role-arn" {
+output "aws-codedeploy-instance-role-arn" {
   value = "${aws_iam_role.codedeploy-instance-role.arn}"
 }
 
-output "codedeploy-instance-profile-arn" {
+output "aws-codedeploy-instance-profile-arn" {
   value = "${aws_iam_instance_profile.codedeploy-instance-profile.arn}"
 }

@@ -161,4 +161,6 @@ module "codedeploy" {
     environment             = "${var.environment}"
     name                    = "${var.name}"
     aws-region-id           = "${var.aws-region-id}"
+
+    aws-codedeploy-service-role-arn = "${module.iam.aws-codedeploy-service-role-arn}"
 }

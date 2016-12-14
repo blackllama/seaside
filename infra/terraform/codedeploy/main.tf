@@ -2,7 +2,9 @@
 // Variables
 //
 
-variable "aws-region-id" {}
+variable "aws-region-id" {
+  type = "string"
+}
 
 variable "name" {
     type        = "string"
@@ -16,11 +18,22 @@ variable "environment" {
     default     = "my-region"
 }
 
+variable "aws-codedeploy-deploy-config" {
+    type        = "string"
+    description = "The name of the group's deployment config. , e.g. CodeDeployDefault.OneAtATime"
+    default     = "CodeDeployDefault.OneAtATime"
+}
+
+variable "aws-codedeploy-service-role-arn" {
+    type = "string"
+    description = "The service role arn for the codedeploy role"
+}
+
 //
 // Resources
 //
 
-resource "aws_s3_bucket" "codedeploy-bucket" {
+resource "aws_s3_bucket" "aws-codedeploy-bucket" {
     bucket = "${var.name}-${var.environment}-codedeploy-bucket"
     acl = "private"
     force_destroy = true
@@ -36,10 +49,14 @@ resource "aws_s3_bucket" "codedeploy-bucket" {
     }
 }
 
+resource "aws_codedeploy_app" "aws-codedeploy-app" {
+    name = "${var.name}-${var.environment}-codedeploy-app"
+}
+
 //
 // Output
 //
 
-output "codedeploy-bucket-id" {
-  value = "${aws_s3_bucket.codedeploy-bucket.id}"
+output "aws-codedeploy-bucket-id" {
+  value = "${aws_s3_bucket.aws-codedeploy-bucket.id}"
 }
