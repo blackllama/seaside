@@ -154,3 +154,7 @@ resource "aws_autoscaling_group" "aws-web-autoscaling-group" {
 //
 // Outputs
 //
+
+output "aws-auto-scaling-group-web" {
+  value = "${aws_autoscaling_group.aws-web-autoscaling-group.name}"
+}

@@ -29,6 +29,11 @@ variable "aws-codedeploy-service-role-arn" {
     description = "The service role arn for the codedeploy role"
 }
 
+variable "aws-auto-scaling-group-web" {
+    type = "string"
+    description = "The aws autoscaling group for the web app."
+}
+
 //
 // Resources
 //
@@ -51,6 +56,14 @@ resource "aws_s3_bucket" "aws-codedeploy-bucket" {
 
 resource "aws_codedeploy_app" "aws-codedeploy-app" {
     name = "${var.name}-${var.environment}-codedeploy-app"
+}
+
+resource "aws_codedeploy_deployment_group" "aws-codedeploy-group-web" {
+    app_name = "${aws_codedeploy_app.aws-codedeploy-app.name}"
+    deployment_group_name = "${var.name}-${var.environment}-aws-codedeploy-group-web"
+    service_role_arn = "${var.aws-codedeploy-service-role-arn}"
+    deployment_config_name = "${var.aws-codedeploy-deploy-config}"
+    autoscaling_groups = ["${var.aws-auto-scaling-group-web}"]
 }
 
 //

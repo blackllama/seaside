@@ -95,69 +95,61 @@ variable "aws-rds-storage-type" {
 //
 
 provider "aws" {
-    profile                         = "${var.aws-profile-name}"
-    region                          = "${var.aws-region-id}"
+    profile                             = "${var.aws-profile-name}"
+    region                              = "${var.aws-region-id}"
 }
 
 module "vpc-stack" {
-    source                          = "./vpc-stack"
-    aws-acl-tag-name                = "${var.name}-${var.environment}-acl"
-    aws-az-mapping                  = "${var.aws-az-mapping}"
-    aws-igw-tag-name                = "${var.name}-${var.environment}-igw"
-    aws-region-id                   = "${var.aws-region-id}"
-    aws-subnet-tag-name             = "${var.name}-${var.environment}-subnet"
-    aws-vpc-tag-name                = "${var.name}-${var.environment}-vpc"
-    environment                     = "${var.environment}"
-    name                            = "${var.name}"
+    source                              = "./vpc-stack"
+    aws-acl-tag-name                    = "${var.name}-${var.environment}-acl"
+    aws-az-mapping                      = "${var.aws-az-mapping}"
+    aws-igw-tag-name                    = "${var.name}-${var.environment}-igw"
+    aws-region-id                       = "${var.aws-region-id}"
+    aws-subnet-tag-name                 = "${var.name}-${var.environment}-subnet"
+    aws-vpc-tag-name                    = "${var.name}-${var.environment}-vpc"
+    environment                         = "${var.environment}"
+    name                                = "${var.name}"
 }
 
 module "security-groups" {
-    source                          = "./security-groups"
-    name                            = "${var.name}"
-    environment                     = "${var.environment}"
-    aws-vpc-id                      = "${module.vpc-stack.aws-vpc-id}"
+    source                              = "./security-groups"
+    name                                = "${var.name}"
+    environment                         = "${var.environment}"
+    aws-vpc-id                          = "${module.vpc-stack.aws-vpc-id}"
 }
 
 /*
 module "rds-instance" {
-    source                          = "./rds-instance"
-    aws-rds-storage-size            = "${var.aws-rds-storage-size}"
-    aws-rds-engine                  = "${var.aws-rds-engine}"
-    aws-rds-engine-version          = "${var.aws-rds-engine-version}"
-    aws-rds-instance-name           = "${var.name}-${var.environment}-rds"
-    aws-rds-instance-class          = "${var.aws-rds-instance-class}"
-    aws-rds-storage-type            = "${var.aws-rds-storage-type}"
-    aws-rds-db-name                 = "${var.aws-rds-db-name}"
-    aws-rds-db-password             = "${var.aws-rds-db-password}"
-    aws-rds-db-username             = "${var.aws-rds-db-username}"
-    aws-rds-vpc-id                  = "${module.vpc-stack.aws-vpc-id}"
-    aws-rds-security-group-ids      = ["${module.security-groups.web-security-group-id}", "${module.security-groups.bastion-security-group-id}"]
-    aws-rds-subnets                 = ["${module.vpc-stack.rds-subnets}"]
+    source                              = "./rds-instance"
+    aws-rds-storage-size                = "${var.aws-rds-storage-size}"
+    aws-rds-engine                      = "${var.aws-rds-engine}"
+    aws-rds-engine-version              = "${var.aws-rds-engine-version}"
+    aws-rds-instance-name               = "${var.name}-${var.environment}-rds"
+    aws-rds-instance-class              = "${var.aws-rds-instance-class}"
+    aws-rds-storage-type                = "${var.aws-rds-storage-type}"
+    aws-rds-db-name                     = "${var.aws-rds-db-name}"
+    aws-rds-db-password                 = "${var.aws-rds-db-password}"
+    aws-rds-db-username                 = "${var.aws-rds-db-username}"
+    aws-rds-vpc-id                      = "${module.vpc-stack.aws-vpc-id}"
+    aws-rds-security-group-ids          = ["${module.security-groups.web-security-group-id}", "${module.security-groups.bastion-security-group-id}"]
+    aws-rds-subnets                     = ["${module.vpc-stack.rds-subnets}"]
 }
 
 module "bastion" {
-    source                          = "./bastion"
-    aws-ec2-subnet-id               = "${module.vpc-stack.web-subnets[0]}"
-    aws-ec2-keypair-name            = "${var.aws-ec2-keypair-name}"
-    aws-ec2-security-group-ids      = ["${module.security-groups.bastion-security-group-id}"]
-    environment                     = "${var.environment}"
-    name                            = "${var.name}"
+    source                              = "./bastion"
+    aws-ec2-subnet-id                   = "${module.vpc-stack.web-subnets[0]}"
+    aws-ec2-keypair-name                = "${var.aws-ec2-keypair-name}"
+    aws-ec2-security-group-ids          = ["${module.security-groups.bastion-security-group-id}"]
+    environment                         = "${var.environment}"
+    name                                = "${var.name}"
 }
 */
 
 module "iam" {
-    source                          = "./iam"
-    environment                     = "${var.environment}"
-    name                            = "${var.name}"
-    aws-region-id                   = "${var.aws-region-id}"
-}
-
-module "codedeploy" {
-    source                          = "./codedeploy"
-    environment                     = "${var.environment}"
-    name                            = "${var.name}"
-    aws-region-id                   = "${var.aws-region-id}"
-    aws-codedeploy-service-role-arn = "${module.iam.aws-codedeploy-service-role-arn}"
+    source          = "./iam"
+    environment     = "${var.environment}"
+    name            = "${var.name}"
+    aws-region-id   = "${var.aws-region-id}"
 }
 
 module "web" {
@@ -170,4 +162,13 @@ module "web" {
     aws-web-subnet-ids                  = ["${module.vpc-stack.web-subnets}"]
     aws-web-security-group-ids          = ["${module.security-groups.web-security-group-id}", "${module.security-groups.bastion-security-group-id}"]
     associate-public-ip-address         = "true"
+}
+
+module "codedeploy" {
+    source                              = "./codedeploy"
+    environment                         = "${var.environment}"
+    name                                = "${var.name}"
+    aws-region-id                       = "${var.aws-region-id}"
+    aws-codedeploy-service-role-arn     = "${module.iam.aws-codedeploy-service-role-arn}"
+    aws-auto-scaling-group-web          = "${module.web.aws-auto-scaling-group-web}"
 }
