@@ -168,5 +168,6 @@ module "web" {
     aws-ec2-keypair-name                = "${var.aws-ec2-keypair-name}"
     aws-codedeploy-instance-profile-arn = "${module.iam.aws-codedeploy-instance-profile-arn}"
     aws-web-subnet-ids                  = ["${module.vpc-stack.web-subnets}"]
-    aws-web-security-group-ids          = ["${module.security-groups.web-security-group-id}"]
+    aws-web-security-group-ids          = ["${module.security-groups.web-security-group-id}", "${module.security-groups.bastion-security-group-id}"]
+    associate-public-ip-address         = "true"
 }

@@ -50,6 +50,7 @@ variable "aws-ec2-keypair-name" {
 variable "associate-public-ip-address" {
     type = "string"
     default = "false"
+    description = "Allows you to connect to the instance for debugging when combined with the ssh security group."
 }
 
 //
