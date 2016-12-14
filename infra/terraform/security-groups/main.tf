@@ -14,8 +14,8 @@ variable "aws-vpc-id" {
     description = "The AWS VPC ID."
 }
 
-resource "aws_security_group" "web-sg" {
-  name        = "${var.name}-${var.environment}-web-sg"
+resource "aws_security_group" "web-security-group" {
+  name        = "${var.name}-${var.environment}-web-security-group"
   description = "Allows http traffic"
   vpc_id      = "${var.aws-vpc-id}"
 
@@ -38,13 +38,13 @@ resource "aws_security_group" "web-sg" {
   }
 
   tags {
-    Name        = "${var.name}-${var.environment}-web-sg"
+    Name        = "${var.name}-${var.environment}-web-security-group"
     Environment = "${var.environment}"
   }
 }
 
-resource "aws_security_group" "bastion-sg" {
-  name        = "${var.name}-${var.environment}-bastion-sg"
+resource "aws_security_group" "bastion-security-group" {
+  name        = "${var.name}-${var.environment}-bastion-security-group"
   description = "Allows ssh traffic"
   vpc_id      = "${var.aws-vpc-id}"
 
@@ -67,7 +67,7 @@ resource "aws_security_group" "bastion-sg" {
   }
 
   tags {
-    Name        = "${var.name}-${var.environment}-bastion-sg"
+    Name        = "${var.name}-${var.environment}-bastion-security-group"
     Environment = "${var.environment}"
   }
 }
@@ -76,10 +76,10 @@ resource "aws_security_group" "bastion-sg" {
 // Outputs
 //
 
-output "web-sg-id" {
-  value = "${aws_security_group.web-sg.id}"
+output "web-security-group-id" {
+  value = "${aws_security_group.web-security-group.id}"
 }
 
-output "bastion-sg-id" {
-  value = "${aws_security_group.bastion-sg.id}"
+output "bastion-security-group-id" {
+  value = "${aws_security_group.bastion-security-group.id}"
 }

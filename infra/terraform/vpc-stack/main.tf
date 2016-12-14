@@ -93,9 +93,11 @@ resource "aws_vpc" "aws-vpc" {
     instance_tenancy     = "${var.aws-vpc-tenancy}"
     enable_dns_support   = "${var.aws-vpc-dns-support}"
     enable_dns_hostnames = "${var.aws-vpc-dns-hostnames}"
+    
     tags {
         Name = "${var.aws-vpc-tag-name}"
     }
+    
     lifecycle {
         prevent_destroy = false
     }
@@ -106,6 +108,7 @@ resource "aws_subnet" "web-subnet" {
     availability_zone = "${var.aws-region-id}${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
     cidr_block        = "10.0.${count.index}.0/24"
     vpc_id            = "${aws_vpc.aws-vpc.id}"
+    
     tags {
         Name  = "${var.aws-subnet-tag-name}-web"
     }
@@ -116,6 +119,7 @@ resource "aws_subnet" "rds-subnet" {
     availability_zone = "${var.aws-region-id}${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
     cidr_block        = "10.0.1${count.index}.0/24"
     vpc_id            = "${aws_vpc.aws-vpc.id}"
+    
     tags {
         Name  = "${var.aws-subnet-tag-name}-rds"
     }

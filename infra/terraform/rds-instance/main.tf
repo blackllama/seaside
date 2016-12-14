@@ -44,7 +44,7 @@ variable "aws-rds-instance-name" {
     default     = "my-aws-rds-instance-name"
 }
 
-variable "aws-rds-sg-ids" {
+variable "aws-rds-security-group-ids" {
     type        = "list"
     description = "List of security groups to associate with the AWS RDS instance."
     default     = []
@@ -78,15 +78,15 @@ variable "aws-rds-vpc-id" {
 // Resources
 //
 
-resource "aws_security_group" "rds-sg" {
-    name        = "${var.aws-rds-instance-name}-sg"
+resource "aws_security_group" "rds-security-group" {
+    name        = "${var.aws-rds-instance-name}-security-group"
     vpc_id      = "${var.aws-rds-vpc-id}"
 
     ingress {
         from_port       = 5432
         to_port         = 5432
         protocol        = "tcp"
-        security_groups = ["${var.aws-rds-sg-ids}"]
+        security_groups = ["${var.aws-rds-security-group-ids}"]
     }
 
     egress {
@@ -97,7 +97,7 @@ resource "aws_security_group" "rds-sg" {
     }
 
     tags {
-        Name        = "${var.aws-rds-instance-name}-sg"
+        Name        = "${var.aws-rds-instance-name}-security-group"
     }
 }
 
@@ -120,7 +120,7 @@ resource "aws_db_instance" "rds-instance" {
     name                   = "${var.aws-rds-db-name}"
     password               = "${var.aws-rds-db-password}"
     username               = "${var.aws-rds-db-username}"
-    vpc_security_group_ids = ["${aws_security_group.rds-sg.id}"]
+    vpc_security_group_ids = ["${aws_security_group.rds-security-group.id}"]
     db_subnet_group_name   = "${aws_db_subnet_group.rds-subnets.name}"
     
     tags {

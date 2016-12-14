@@ -20,7 +20,7 @@ variable "aws-ec2-keypair-name" {
     default = "seaside-keypair"
 }
 
-variable "aws-ec2-sg-ids" {
+variable "aws-ec2-security-group-ids" {
     type        = "list"
     description = "List of security groups to associate with the AWS EC2 instance."
     default     = []
@@ -54,7 +54,7 @@ resource "aws_instance" "bastion" {
     instance_type = "t2.micro"
     key_name = "${var.aws-ec2-keypair-name}"
     subnet_id = "${var.aws-ec2-subnet-id}"
-    vpc_security_group_ids = ["${var.aws-ec2-sg-ids}"]
+    vpc_security_group_ids = ["${var.aws-ec2-security-group-ids}"]
     
     tags {
         Name = "${var.name}-${var.environment}-bastion"
