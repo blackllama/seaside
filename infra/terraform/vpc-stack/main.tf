@@ -95,21 +95,29 @@ resource "aws_vpc" "aws-vpc" {
     enable_dns_hostnames = "${var.aws-vpc-dns-hostnames}"
     tags {
         Name = "${var.aws-vpc-tag-name}"
-        Owner = "terraform-${var.name}-${var.environment}"
     }
     lifecycle {
         prevent_destroy = false
     }
 }
 
-resource "aws_subnet" "aws-subnet" {
+resource "aws_subnet" "web-subnet" {
     count             = "${length(split(",", lookup(var.aws-az-mapping, var.aws-region-id)))}"
     availability_zone = "${var.aws-region-id}${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
     cidr_block        = "10.0.${count.index}.0/24"
     vpc_id            = "${aws_vpc.aws-vpc.id}"
     tags {
-        Name  = "${var.aws-subnet-tag-name}"
-        Owner = "terraform-${var.name}-${var.environment}-${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
+        Name  = "${var.aws-subnet-tag-name}-web"
+    }
+}
+
+resource "aws_subnet" "rds-subnet" {
+    count             = "${length(split(",", lookup(var.aws-az-mapping, var.aws-region-id)))}"
+    availability_zone = "${var.aws-region-id}${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
+    cidr_block        = "10.0.1${count.index}.0/24"
+    vpc_id            = "${aws_vpc.aws-vpc.id}"
+    tags {
+        Name  = "${var.aws-subnet-tag-name}-rds"
     }
 }
 
@@ -117,7 +125,6 @@ resource "aws_internet_gateway" "aws-igw" {
     vpc_id = "${aws_vpc.aws-vpc.id}"
     tags {
         Name = "${var.aws-igw-tag-name}"
-        Owner = "terraform-${var.name}-${var.environment}"
     }
 }
 
@@ -129,6 +136,7 @@ resource "aws_route" "aws-igw-route" {
 
 resource "aws_default_network_acl" "aws-acl" {
     default_network_acl_id = "${aws_vpc.aws-vpc.default_network_acl_id}"
+    
     ingress {
         protocol   = -1
         rule_no    = 100
@@ -137,6 +145,7 @@ resource "aws_default_network_acl" "aws-acl" {
         from_port  = 0
         to_port    = 0
     }
+    
     egress {
         protocol   = -1
         rule_no    = 100
@@ -145,9 +154,9 @@ resource "aws_default_network_acl" "aws-acl" {
         from_port  = 0
         to_port    = 0
     }
+    
     tags {
         Name = "${var.aws-acl-tag-name}"
-        Owner = "terraform-${var.name}-${var.environment}"
     }
 }
 
@@ -155,7 +164,11 @@ output "aws-vpc-id" {
     value = "${aws_vpc.aws-vpc.id}"
 }
 
-output "aws-subnets" {
-    value = [ "${aws_subnet.aws-subnet.*.id}" ]
+output "web-subnets" {
+    value = [ "${aws_subnet.web-subnet.*.id}" ]
+}
+
+output "rds-subnets" {
+    value = [ "${aws_subnet.rds-subnet.*.id}" ]
 }
 

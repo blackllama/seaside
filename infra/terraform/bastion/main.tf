@@ -61,7 +61,7 @@ resource "aws_instance" "bastion" {
     }
 
     user_data = <<EOF
-sudo apt-get install postgresql-client-common postgresql-client --assume-yes
+sudo apt-get update && sudo apt-get install postgresql-client-common postgresql-client --assume-yes
 
 EOF
 }

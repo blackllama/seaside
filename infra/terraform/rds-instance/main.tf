@@ -104,6 +104,7 @@ resource "aws_security_group" "rds-sg" {
 resource "aws_db_subnet_group" "rds-subnets" {
     name                   = "${var.aws-rds-instance-name}-subnets"
     subnet_ids             = ["${var.aws-rds-subnets}"]
+    
     tags {
         Name = "${var.aws-rds-instance-name}-subnets"
     }
