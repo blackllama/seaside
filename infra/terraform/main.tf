@@ -34,6 +34,12 @@ variable "aws-az-mapping" {
     }
 }
 
+variable "aws-ec2-keypair-name" {
+    type        = "string"
+    description = "The keypair name for ssh access to the instance. e.g. seaside-keypair",
+    default = "seaside-keypair"
+}
+
 // RDS
 
 variable "aws-rds-db-name" {
@@ -118,29 +124,46 @@ module "security-groups" {
     aws-vpc-id = "${module.vpc-stack.aws-vpc-id}"
 }
 
-resource "aws_subnet" "rds-subnet" {
-    count             = "${length(split(",", lookup(var.aws-az-mapping, var.aws-region-id)))}"
-    availability_zone = "${var.aws-region-id}${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
-    cidr_block        = "10.0.1${count.index}.0/24"
-    vpc_id            = "${module.vpc-stack.aws-vpc-id}"
-    tags {
-        Name  = "${var.name}-${var.environment}-rds-subnet"
-        Owner = "terraform-${var.name}-${var.environment}-${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
-    }
-}
+//
+// RDS Instance
+//
 
-module "rds-instance" {
-    source                 = "./rds-instance"
-    aws-rds-storage-size   = "${var.aws-rds-storage-size}"
-    aws-rds-engine         = "${var.aws-rds-engine}"
-    aws-rds-engine-version = "${var.aws-rds-engine-version}"
-    aws-rds-instance-name  = "${var.name}-${var.environment}-rds"
-    aws-rds-instance-class = "${var.aws-rds-instance-class}"
-    aws-rds-storage-type   = "${var.aws-rds-storage-type}"
-    aws-rds-db-name        = "${var.aws-rds-db-name}"
-    aws-rds-db-password    = "${var.aws-rds-db-password}"
-    aws-rds-db-username    = "${var.aws-rds-db-username}"
-    aws-rds-sg-ids         = ["${module.security-groups.web-sg-id}", "${module.security-groups.bastion-sg-id}"]
-    aws-rds-vpc-id         = "${module.vpc-stack.aws-vpc-id}"
-    aws-rds-subnets        = ["${aws_subnet.rds-subnet.*.id}"]
+# resource "aws_subnet" "rds-subnet" {
+#     count             = "${length(split(",", lookup(var.aws-az-mapping, var.aws-region-id)))}"
+#     availability_zone = "${var.aws-region-id}${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
+#     cidr_block        = "10.0.1${count.index}.0/24"
+#     vpc_id            = "${module.vpc-stack.aws-vpc-id}"
+#     tags {
+#         Name  = "${var.name}-${var.environment}-rds-subnet"
+#         Owner = "terraform-${var.name}-${var.environment}-${element(split(",", lookup(var.aws-az-mapping, var.aws-region-id)), count.index)}"
+#     }
+# }
+
+# module "rds-instance" {
+#     source                 = "./rds-instance"
+#     aws-rds-storage-size   = "${var.aws-rds-storage-size}"
+#     aws-rds-engine         = "${var.aws-rds-engine}"
+#     aws-rds-engine-version = "${var.aws-rds-engine-version}"
+#     aws-rds-instance-name  = "${var.name}-${var.environment}-rds"
+#     aws-rds-instance-class = "${var.aws-rds-instance-class}"
+#     aws-rds-storage-type   = "${var.aws-rds-storage-type}"
+#     aws-rds-db-name        = "${var.aws-rds-db-name}"
+#     aws-rds-db-password    = "${var.aws-rds-db-password}"
+#     aws-rds-db-username    = "${var.aws-rds-db-username}"
+#     aws-rds-sg-ids         = ["${module.security-groups.web-sg-id}", "${module.security-groups.bastion-sg-id}"]
+#     aws-rds-vpc-id         = "${module.vpc-stack.aws-vpc-id}"
+#     aws-rds-subnets        = ["${aws_subnet.rds-subnet.*.id}"]
+# }
+
+//
+// Bastion EC2 instance
+//
+
+module "bastion" {
+    source                  = "./bastion"
+    aws-ec2-subnet-id       = "${module.vpc-stack.aws-subnets[0]}"
+    aws-ec2-keypair-name    = "${var.aws-ec2-keypair-name}"
+    aws-ec2-sg-ids          = ["${module.security-groups.bastion-sg-id}"]
+    environment             = "${var.environment}"
+    name                    = "${var.name}"
 }

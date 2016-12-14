@@ -16,6 +16,8 @@ Add the terraform executable into your PATH environment variable.
 
 Rename `terraform` to `tf` to save typing.
 
+In the AWS Console in EC2 create a key pair called `seaside-keypair` so that you can ssh to the bastion EC2 instance.
+
 ## AWS Infrastructure Setup
 
 `$ cd infra/terraform`
