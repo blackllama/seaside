@@ -93,7 +93,7 @@ $ ./package.ps1
 
 Edit the `./deploy.ps1` file for your environment. I've included a sample `dev` environment.
 
-````ps
+````powershell
 $name                           = "seaside"
 $environment                    = "dev-east-1"
 $aws_region_id                  = "us-east-1"
