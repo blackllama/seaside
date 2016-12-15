@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Seaside.Web.Api.Controllers
@@ -10,7 +11,7 @@ namespace Seaside.Web.Api.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Seaside 3.0!";
+            return $"Seaside 1.0! {Environment.MachineName}\n";
         }
     }
 }

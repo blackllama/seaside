@@ -11,5 +11,4 @@ aws-rds-db-password     = "aj8^54sd9$92Kla"
 aws-rds-engine          = "postgres"
 aws-rds-engine-version  = "9.6"
 
-
 # psql --host=seaside-dev-east-1-rds.ckuobcolmlxa.us-east-1.rds.amazonaws.com --username=seaside

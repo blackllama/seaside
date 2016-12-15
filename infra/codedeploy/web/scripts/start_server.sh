@@ -1,3 +1,3 @@
 #!/bin/bash
-service supervisor start
-service nginx start
+sudo service supervisor start
+sudo service nginx start
