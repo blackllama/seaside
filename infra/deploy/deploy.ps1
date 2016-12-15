@@ -2,11 +2,14 @@
 # variables
 #
 
-$aws_profile_name               = "seaside-infra"
+$name                           = "seaside"
+$environment                    = "dev-east-1"
 $aws_region_id                  = "us-east-1"
-$aws_codedeploy_app             = "seaside-dev-east-1-codedeploy-app"
-$aws_codedeploy_bucket          = "seaside-dev-east-1-codedeploy-bucket"
-$aws_codedeploy_group_web       = "seaside-dev-east-1-aws-codedeploy-group-web"
+$aws_profile_name               = "seaside-infra"
+
+$aws_codedeploy_app             = "$name-$environment-codedeploy-app"
+$aws_codedeploy_bucket          = "$name-$environment-codedeploy-bucket"
+$aws_codedeploy_group_web       = "$name-$environment-aws-codedeploy-group-web"
 $aws_codedeploy_deploy_config   = "CodeDeployDefault.OneAtATime"
 
 #

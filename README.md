@@ -46,7 +46,7 @@ aws-rds-engine-version  = "9.6"
 Load the terraform modules:
 
 ````sh
-tf get
+$ tf get
 ````
 
 Validate the terraform template:
@@ -89,6 +89,20 @@ Package web for codedeploy:
 
 ````sh
 $ ./package.ps1
+````
+
+Edit the `./deploy.ps1` file for your environment. I've included a sample `dev` environment.
+
+````ps
+$name                           = "seaside"
+$environment                    = "dev-east-1"
+$aws_region_id                  = "us-east-1"
+$aws_profile_name               = "seaside-infra"
+
+$aws_codedeploy_app             = "$name-$environment-codedeploy-app"
+$aws_codedeploy_bucket          = "$name-$environment-codedeploy-bucket"
+$aws_codedeploy_group_web       = "$name-$environment-aws-codedeploy-group-web"
+$aws_codedeploy_deploy_config   = "CodeDeployDefault.OneAtATime"
 ````
 
 Deploy web via codedeploy:
