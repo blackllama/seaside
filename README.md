@@ -2,21 +2,21 @@
 
 This is a sample to showcase a simple way of deploying a dotnet core web application to AWS. With some simple scripts you can:
 
-- Stand up the entire AWS stack using Terraform.
-- Execute zero-downtime rolling deployments to AWS using codedeploy + ELB/ASG.
-- Deploy multiple dev/test/prod stacks to AWS side by side.
-- Scale up/down the web EC2 instance count and automatically deploy the latest version of the code.
-- Cross compile from windows so that we can deploy on a linux Ubuntu 14.04 AMI.
-- NGINX reverse proxies to a Kestral ASP.NET web server, which is managed by supervisor.
-- SSH access to the instances for debugging purposes. todo: Better security for production using VPN.
-- Persist data using RDS Postgres instance.
-- [] Support other languages (Java, Go, Node.js, Python)
-- [] Multi-AZ RDS instance for disaster recovery and high availablity.
-- [] NGINX config security hardening.
-- [] Support newer versions of Ubuntu that are systemd based and removing supervisor.
-- [] Continuous integration and Continuous deploy using AWS Codebuild which is Docker based and CodePipeline.
-- [] Log collection agent using https://www.scalyr.com
-- [] Metrics statsd agent using https://www.datadoghq.com
+- [x] Stand up the entire AWS stack using Terraform.
+- [x] Execute zero-downtime rolling deployments to AWS using codedeploy + ELB/ASG.
+- [x] Deploy multiple dev/test/prod stacks to AWS side by side.
+- [x] Scale up/down the web EC2 instance count and automatically deploy the latest version of the code.
+- [x] Cross compile from windows so that we can deploy on a linux Ubuntu 14.04 AMI.
+- [x] NGINX reverse proxies to a Kestral ASP.NET web server, which is managed by supervisor.
+- [x] SSH access to the instances for debugging purposes. todo: Better security for production using VPN.
+- [x] Persist data using RDS Postgres instance.
+- [ ] Support other languages (Java, Go, Node.js, Python)
+- [ ] Multi-AZ RDS instance for disaster recovery and high availablity.
+- [ ] NGINX config security hardening.
+- [ ] Support newer versions of Ubuntu that are systemd based and removing supervisor.
+- [ ] Continuous integration and Continuous deploy using AWS Codebuild which is Docker based and CodePipeline.
+- [ ] Log collection agent using https://www.scalyr.com
+- [ ] Metrics statsd agent using https://www.datadoghq.com
 
 ## Tools Setup
 
