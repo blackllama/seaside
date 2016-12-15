@@ -10,6 +10,7 @@ This is a sample to showcase a simple way of deploying a dotnet core web applica
 - NGINX reverse proxies to a Kestral ASP.NET web server, which is managed by supervisor.
 - SSH access to the instances for debugging purposes. todo: Better security for production using VPN.
 - Persist data using RDS Postgres instance.
+- todo: Support other languages (Java, Go, Node.js, Python)
 - todo: Multi-AZ RDS instance for disaster recovery and high availablity.
 - todo: NGINX config security hardening.
 - todo: Support newer versions of Ubuntu that are systemd based and removing supervisor.
