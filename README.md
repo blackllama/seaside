@@ -4,6 +4,7 @@ This is a sample to showcase a simple way of deploying a dotnet core web applica
 
 - Stand up the entire AWS stack using Terraform.
 - Execute zero-downtime rolling deployments to AWS using codedeploy + ELB/ASG.
+- Deploy multiple dev/test/prod stacks to AWS side by side.
 - Scale up/down the web EC2 instance count and automatically deploy the latest version of the code.
 - Cross compile from windows so that we can deploy on a linux Ubuntu 14.04 AMI.
 - NGINX reverse proxies to a Kestral ASP.NET web server, which is managed by Supervisor. todo: NGINX config security hardening.
