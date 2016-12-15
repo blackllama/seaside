@@ -11,7 +11,7 @@ namespace Seaside.Web.Api.Controllers
         [HttpGet]
         public string Get()
         {
-            return $"Seaside 1.0! {Environment.MachineName}\n";
+            return $"Seaside 2.0! {Environment.MachineName}\n";
         }
     }
 }
