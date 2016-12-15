@@ -1,6 +1,6 @@
 # Seaside
 
-This is a sample to showcase a simple way of deploying a dotnet core web application to AWS. With some simple scripts you can:
+This is a sample to showcase a simple way of deploying a dotnet core web application to AWS.
 
 - [x] Stand up the entire AWS stack using Terraform.
 - [x] Execute zero-downtime rolling deployments to AWS using codedeploy + ELB/ASG.
