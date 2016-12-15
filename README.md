@@ -76,7 +76,7 @@ $ tf destroy
 ## Deployment
 
 ````sh
-cd infra/deploy
+$ cd infra/deploy
 ````
 
 Switch into powershell:
@@ -103,6 +103,7 @@ $aws_codedeploy_app             = "$name-$environment-codedeploy-app"
 $aws_codedeploy_bucket          = "$name-$environment-codedeploy-bucket"
 $aws_codedeploy_group_web       = "$name-$environment-aws-codedeploy-group-web"
 $aws_codedeploy_deploy_config   = "CodeDeployDefault.OneAtATime"
+
 ````
 
 Deploy web via codedeploy:
