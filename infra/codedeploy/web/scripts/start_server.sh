@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo service supervisor stop
 sudo service supervisor start
 
 url="http://localhost:5000"
@@ -31,7 +32,10 @@ fi
 url="http://localhost:80"
 count=0
 max=60
+
+sudo service nginx stop
 sudo service nginx start
+
 echo "checking $url"
 
 while [ $count -le $max ]

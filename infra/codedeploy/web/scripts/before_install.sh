@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get update
+# sudo apt-get update
 
 # Remove existing config
 rm -f /etc/nginx/sites-available/default

@@ -24,7 +24,3 @@ hooks:
       runas: root
     - location: scripts/register_with_elb.sh
       timeout: 120
-  # ValidateService:
-  #   - location: scripts/validate_service.sh
-  #     timeout: 120
-  #     runas: root
