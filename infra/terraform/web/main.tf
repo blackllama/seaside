@@ -128,8 +128,8 @@ resource "aws_autoscaling_group" "aws-web-autoscaling-group" {
     vpc_zone_identifier = ["${var.aws-web-subnet-ids}"]
     
     min_size = 1
-    max_size = 6
-    desired_capacity = 5
+    max_size = 4
+    desired_capacity = 4
     
     health_check_grace_period = 300
     health_check_type = "ELB"
