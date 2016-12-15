@@ -10,11 +10,12 @@ This is a sample to showcase a simple way of deploying a dotnet core web applica
 - [x] NGINX reverse proxies to a Kestral ASP.NET web server, which is managed by supervisor.
 - [x] SSH access to the instances for debugging purposes. todo: Better security for production using VPN.
 - [x] Persist data using RDS Postgres instance.
-- [ ] Support other languages (Java, Go, Node.js, Python)
+- [ ] Custom domain name using Route53 DNS.
+- [ ] Continuous integration and Continuous deploy using AWS Codebuild which is Docker based and CodePipeline.
+- [ ] Support other languages and frameworks (Java, Go, Node.js, Python)
 - [ ] Multi-AZ RDS instance for disaster recovery and high availablity.
 - [ ] NGINX config security hardening.
 - [ ] Support newer versions of Ubuntu that are systemd based and removing supervisor.
-- [ ] Continuous integration and Continuous deploy using AWS Codebuild which is Docker based and CodePipeline.
 - [ ] Log collection agent using https://www.scalyr.com
 - [ ] Metrics statsd agent using https://www.datadoghq.com
 
