@@ -1,13 +1,26 @@
 #!/bin/bash
 
 url="http://localhost:80"
-response=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' $url)
+count=0
+max=60
 
-if [ $response -ne "200" ]
+echo "checking $url"
+
+while [ $count -le $max ]
+do
+    response=$(curl -o /dev/null --silent --write-out '%{http_code}\n' $url)
+
+    if [ $response -eq "200" ]
     then
-        echo "Web service not running"
-        exit 1
-    else
-        echo "Web service running"
-        exit 0
-fi
+      echo "cool"
+      exit 0
+    fi
+    
+    echo "Waiting $count of $max seconds"
+    ((count++))
+    
+    sleep 1
+done
+
+echo "Web service not running"
+exit 1

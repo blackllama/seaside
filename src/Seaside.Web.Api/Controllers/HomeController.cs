@@ -6,10 +6,11 @@ namespace Seaside.Web.Api.Controllers
     [Route("")]
     public class HomeController : Controller
     {
+        [HttpHead]
         [HttpGet]
         public string Get()
         {
-            return "Seaside!";
+            return "Seaside 3.0!";
         }
     }
 }
