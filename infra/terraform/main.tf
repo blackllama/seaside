@@ -172,3 +172,11 @@ module "codedeploy" {
     aws-codedeploy-service-role-arn     = "${module.iam.aws-codedeploy-service-role-arn}"
     aws-auto-scaling-group-web          = "${module.web.aws-auto-scaling-group-web}"
 }
+
+//
+// Output
+//
+
+output "aws-elb-web-elb-dns-name" {
+    value = "${module.web.aws-elb-web-elb-dns-name}"
+}

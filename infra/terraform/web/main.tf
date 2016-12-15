@@ -156,5 +156,9 @@ resource "aws_autoscaling_group" "aws-web-autoscaling-group" {
 //
 
 output "aws-auto-scaling-group-web" {
-  value = "${aws_autoscaling_group.aws-web-autoscaling-group.name}"
+    value = "${aws_autoscaling_group.aws-web-autoscaling-group.name}"
+}
+
+output "aws-elb-web-elb-dns-name" {
+    value = "${aws_elb.aws-elb-web.dns-name}"
 }

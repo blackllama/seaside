@@ -8,7 +8,9 @@ Create a user in AWS IAM called `seaside-infra` which has temporary administrato
 
 Configure aws cli: 
 
-`$ aws configure --profile seaside-infra`
+````sh
+$ aws configure --profile seaside-infra
+````
 
 Install terraform by downloading from here: https://www.terraform.io/downloads.html
 
@@ -20,20 +22,79 @@ In the AWS Console in EC2 create a key pair called `seaside-keypair` so that you
 
 ## AWS Infrastructure Setup
 
-`$ cd infra/terraform`
+````sh
+$ cd infra/terraform
+````
+
+Edit the `terraform.tfvars` file for your environment. I've included a sample `dev` environment config.
+
+````tf
+name                    = "seaside"
+environment             = "dev-east-1"
+
+aws-profile-name        = "seaside-infra"
+aws-region-id           = "us-east-1"
+
+aws-rds-db-name         = "seaside"
+aws-rds-db-username     = "seaside"
+aws-rds-db-password     = "aj8^54sd9$92Kla"
+aws-rds-engine          = "postgres"
+aws-rds-engine-version  = "9.6"
+
+````
+
+Load the terraform modules:
+
+````sh
+tf get
+````
 
 Validate the terraform template:
 
-`$ tf validate`
+````sh
+$ tf validate
+````
 
 Plan the terraform template:
 
-`$ tf plan`
+````sh
+$ tf plan
+````
 
 Apply the terraform template:
 
-`$ tf apply`
+````sh
+$ tf apply
+````
 
-Destroy the terraform template:
+To destroy the stack:
 
-`$ tf destroy`
+````sh
+$ tf destroy
+````
+
+## Deployment
+
+````sh
+cd infra/deploy
+````
+
+Switch into powershell:
+
+````sh
+$ powershell
+````
+
+Package web for codedeploy:
+
+````sh
+$ ./package.ps1
+````
+
+Deploy web via codedeploy:
+
+````sh
+$ ./deploy.ps1
+````
+
+Once codedeploy has rolled out the deploy, grab the elb dns url and ping the web site!
