@@ -118,7 +118,6 @@ module "security-groups" {
     aws-vpc-id                          = "${module.vpc-stack.aws-vpc-id}"
 }
 
-/*
 module "rds-instance" {
     source                              = "./rds-instance"
     aws-rds-storage-size                = "${var.aws-rds-storage-size}"
@@ -143,7 +142,6 @@ module "bastion" {
     environment                         = "${var.environment}"
     name                                = "${var.name}"
 }
-*/
 
 module "iam" {
     source          = "./iam"
